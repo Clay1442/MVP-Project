@@ -1,17 +1,24 @@
 package com.mvpproject.mvp_project.entities;
 
 import com.mvpproject.mvp_project.entities.enums.Role;
+import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
+
+@Entity
+@Table(name = "tb_users")
 public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String login;
     private String password;
