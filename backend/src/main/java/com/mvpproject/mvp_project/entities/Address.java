@@ -1,5 +1,6 @@
 package com.mvpproject.mvp_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -66,6 +67,7 @@ public class Address implements Serializable {
         this.state = state;
     }
 
+    @JsonIgnore
     public Client getClient() {
         return client;
     }
