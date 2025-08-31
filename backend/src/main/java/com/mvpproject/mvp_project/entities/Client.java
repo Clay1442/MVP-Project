@@ -23,20 +23,21 @@ public class Client implements Serializable {
     private LocalDate birthDate;
     private String phone;
 
-    @OneToOne(mappedBy = "client" ,cascade = CascadeType.ALL)
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     public Client() {
     }
 
-    public Client(Long id, String name, String email, String cpf, LocalDate birthDate, String phone, Address address) {
+    public Client(Long id, String name, String email, String cpf, LocalDate birthDate, String phone) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.cpf = cpf;
         this.birthDate = birthDate;
         this.phone = phone;
-        this.address = address;
     }
 
 

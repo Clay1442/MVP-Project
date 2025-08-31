@@ -21,19 +21,17 @@ public class Address implements Serializable {
     private String city;
     private String state;
 
-    @OneToOne
-    @JoinColumn(name = "client_id")
+    @OneToOne(mappedBy = "address" ,cascade = CascadeType.ALL)
     private Client client;
 
     public Address() {
     }
 
-    public Address(Long id, String street, String city, String state, Client client) {
+    public Address(Long id, String street, String city, String state) {
         this.id = id;
         this.street = street;
         this.city = city;
         this.state = state;
-        this.client = client;
     }
 
     public Long getId() {
