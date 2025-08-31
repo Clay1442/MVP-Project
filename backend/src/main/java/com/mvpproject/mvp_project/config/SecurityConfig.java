@@ -1,36 +1,81 @@
 package com.mvpproject.mvp_project.config;
 
 
+import com.mvpproject.mvp_project.security.SecurityFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import java.util.Arrays;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final SecurityFilter securityFilter;
+
+    public SecurityConfig(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers(toH2Console()).permitAll()
-                .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/**").permitAll()
-                .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
-                .anyRequest().authenticated());
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(Customizer.withDefaults()).authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/clients/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/clients/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/clients/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/clients/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/clients/**").hasRole("ADMIN")
 
-        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())).build();
+    }
 
-        http.csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()));
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
 
-        return http.build();
+        CorsConfiguration configuration = new CorsConfiguration();
 
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+
+
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 

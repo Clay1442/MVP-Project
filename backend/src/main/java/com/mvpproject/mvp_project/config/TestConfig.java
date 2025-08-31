@@ -2,10 +2,14 @@ package com.mvpproject.mvp_project.config;
 
 import com.mvpproject.mvp_project.entities.Address;
 import com.mvpproject.mvp_project.entities.Client;
+import com.mvpproject.mvp_project.entities.User;
+import com.mvpproject.mvp_project.entities.enums.Role;
 import com.mvpproject.mvp_project.repositories.ClientRepository;
+import com.mvpproject.mvp_project.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -16,13 +20,23 @@ import java.util.Arrays;
 public class TestConfig implements CommandLineRunner {
 
     private final ClientRepository clientRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public TestConfig(ClientRepository clientRepository) {
+    public TestConfig(ClientRepository clientRepository,  UserRepository userRepository,  PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
+
+        User user = new User(null, "admin", "admin@email.com", passwordEncoder.encode("123456"));
+        user.addRole(Role.ROLE_ADMIN);
+
+        userRepository.save(user);
+
 
         Client client1 = new Client(null, "Ana Silva", "ana.silva@email.com", "111.111.111-11", LocalDate.parse("1990-05-15"), "85-91111-1111");
         Client client2 = new Client(null, "Bruno Costa", "bruno.costa@email.com", "222.222.222-22", LocalDate.parse("1985-11-20"), "85-92222-2222");

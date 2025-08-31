@@ -2,10 +2,9 @@ package com.mvpproject.mvp_project.controllers;
 
 import com.mvpproject.mvp_project.dto.AddressDTO;
 import com.mvpproject.mvp_project.dto.ClientDTO;
+import com.mvpproject.mvp_project.dto.CreateClientDTO;
 import com.mvpproject.mvp_project.dto.UpdateClientDTO;
-import com.mvpproject.mvp_project.entities.Client;
 import com.mvpproject.mvp_project.services.ClientService;
-import org.hibernate.sql.Update;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +33,14 @@ public class ClientController {
         return ResponseEntity.ok().body(response);
     }
 
+
+    @PostMapping
+    public ResponseEntity<ClientDTO> save(@RequestBody CreateClientDTO dto) {
+        ClientDTO newClient = clientService.create(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newClient.getId()).toUri();
+        return ResponseEntity.created(uri).body(newClient);
+    }
+
     @PatchMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody UpdateClientDTO dto) {
         ClientDTO response = clientService.updateClient(id, dto);
@@ -47,7 +54,7 @@ public class ClientController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@RequestParam Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         clientService.delete(id);
         return ResponseEntity.noContent().build();
     }
