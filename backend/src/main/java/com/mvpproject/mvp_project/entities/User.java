@@ -101,6 +101,10 @@ public class User implements Serializable, UserDetails {
         return true;
     }
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 
     public Set<Role> getRoles() {

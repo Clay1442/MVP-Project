@@ -1,6 +1,7 @@
 package com.mvpproject.mvp_project.dto;
 
 import com.mvpproject.mvp_project.entities.Client;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ public class CreateClientDTO {
 
     private String cpf;
 
+    @Schema(description = "Data de nascimento do cliente", example = "1990-12-31", format = "date")
     private LocalDate birthDate;
 
     private String phone;
