@@ -31,7 +31,7 @@ public class TokenService {
           return token;
       }
       catch(JWTCreationException exception){
-          throw new RuntimeException("Erro ao gerar o token JWT", exception);
+          throw new JWTCreationException("Erro ao gerar o token JWT", exception);
       }
   }
 

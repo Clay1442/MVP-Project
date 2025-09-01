@@ -1,5 +1,6 @@
 package com.mvpproject.mvp_project.security;
 
+import com.mvpproject.mvp_project.exceptions.UsernameNotFoundException;
 import com.mvpproject.mvp_project.repositories.UserRepository;
 import com.mvpproject.mvp_project.services.TokenService;
 import jakarta.servlet.FilterChain;
@@ -35,7 +36,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             if (!login.isEmpty()) {
                 UserDetails user = userRepository.findByLogin(login)
-                        .orElseThrow(() -> new RuntimeException("Usuário não encontrado no filtro de segurança"));
+                        .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado no filtro de segurança"));
 
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);

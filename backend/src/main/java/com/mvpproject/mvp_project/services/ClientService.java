@@ -6,6 +6,7 @@ import com.mvpproject.mvp_project.dto.CreateClientDTO;
 import com.mvpproject.mvp_project.dto.UpdateClientDTO;
 import com.mvpproject.mvp_project.entities.Address;
 import com.mvpproject.mvp_project.entities.Client;
+import com.mvpproject.mvp_project.exceptions.ResourceNotFoundException;
 import com.mvpproject.mvp_project.repositories.AddressRepository;
 import com.mvpproject.mvp_project.repositories.ClientRepository;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,7 @@ public class ClientService {
 
 
     public ClientDTO updateClient(Long id, UpdateClientDTO dto) {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new NullPointerException("User not found!"));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
         if (dto.getName() != null && !dto.getName().isBlank()) {
             client.setName(dto.getName());
@@ -66,7 +67,7 @@ public class ClientService {
     }
 
     public AddressDTO updateAddress(AddressDTO dto, Long id) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new NullPointerException("User not found!"));
+        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
         if (dto.getCity() != null && !dto.getCity().isBlank()){
             address.setCity(dto.getCity());
@@ -105,7 +106,7 @@ public class ClientService {
     }
 
     public void delete(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new NullPointerException("User not found!"));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
         clientRepository.delete(client);
     }
 }
