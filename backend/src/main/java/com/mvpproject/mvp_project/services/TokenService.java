@@ -12,7 +12,6 @@ import com.auth0.jwt.JWT;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 
 @Service
 public class TokenService {
@@ -46,7 +45,7 @@ public class TokenService {
                     .getSubject();
         }
         catch(JWTVerificationException exception){
-            throw new RuntimeException("Erro ao gerar o token JWT", exception);
+            return "";
         }
     }
 

@@ -1,5 +1,6 @@
 package com.mvpproject.mvp_project.entities;
 
+import com.mvpproject.mvp_project.security.CryptoConverter;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -19,7 +20,10 @@ public class Client implements Serializable {
 
     private String name;
     private String email;
+
+    @Convert(converter = CryptoConverter.class)
     private String cpf;
+
     private LocalDate birthDate;
     private String phone;
 
