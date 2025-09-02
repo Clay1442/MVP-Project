@@ -1,18 +1,29 @@
 package com.mvpproject.mvp_project.dto;
 
-import com.mvpproject.mvp_project.entities.Client;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
 public class CreateClientDTO {
+    @NotBlank(message = "O nome é obrigatório")
     private String name;
 
+    @Email(message = "Formato de e-mail inválido")
+    @NotBlank(message = "O e-mail é obrigatório")
     private String email;
 
+
+    @CPF(message = "CPF inválido")
     private String cpf;
 
     @Schema(description = "Data de nascimento do cliente", example = "1990-12-31", format = "date")
+    @NotNull(message = "A data de nascimento é obrigatória")
+    @Past(message = "A data de nascimento deve ser no passado")
     private LocalDate birthDate;
 
     private String phone;
