@@ -1,9 +1,6 @@
 package com.mvpproject.mvp_project.services;
 
-import com.mvpproject.mvp_project.dto.AddressDTO;
-import com.mvpproject.mvp_project.dto.ClientDTO;
-import com.mvpproject.mvp_project.dto.CreateClientDTO;
-import com.mvpproject.mvp_project.dto.UpdateClientDTO;
+import com.mvpproject.mvp_project.dto.*;
 import com.mvpproject.mvp_project.entities.Address;
 import com.mvpproject.mvp_project.entities.Client;
 import com.mvpproject.mvp_project.exceptions.ResourceNotFoundException;
@@ -49,14 +46,18 @@ public class ClientServiceTest {
         existingId = 1L;
         nonExistingId = 2L;
 
+        CreateAddressDTO dtoAddress = new CreateAddressDTO();
+        dtoAddress.setCity("Fortaleza");
+        dtoAddress.setState("CE");
+        dtoAddress.setStreet("Avenida Beira Mar, 1234");
+
         createClientDTO = new CreateClientDTO();
         createClientDTO.setName("Clay");
         createClientDTO.setEmail("clay@email.com");
         createClientDTO.setCpf("1234567890");
         createClientDTO.setPhone("1234567890");
         createClientDTO.setBirthDate(LocalDate.parse("2005-03-31"));
-        Address tempAddress = new Address(null, "Avenida Beira Mar, 1234", "Fortaleza", "CE");
-        createClientDTO.setAddress(new AddressDTO(tempAddress));
+        createClientDTO.setAddress(dtoAddress);
 
         client = new Client();
         client.setId(existingId);
@@ -65,7 +66,7 @@ public class ClientServiceTest {
         client.setCpf(createClientDTO.getCpf());
         client.setPhone(createClientDTO.getPhone());
         client.setBirthDate(createClientDTO.getBirthDate());
-        client.setAddress(tempAddress);
+        client.setAddress(new  Address(null, dtoAddress.getCity(), dtoAddress.getState(), dtoAddress.getStreet()));
 
         updateClientDTO = new UpdateClientDTO();
         updateClientDTO.setName("Nome Atualizado");

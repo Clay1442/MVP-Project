@@ -1,6 +1,5 @@
 package com.mvpproject.mvp_project.services;
 
-import com.mvpproject.mvp_project.repositories.ClientRepository;
 import com.mvpproject.mvp_project.repositories.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

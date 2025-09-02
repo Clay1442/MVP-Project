@@ -28,7 +28,7 @@ public class CreateClientDTO {
 
     private String phone;
 
-    private AddressDTO address;
+    private CreateAddressDTO address;
 
     public CreateClientDTO() {
     }
@@ -73,11 +73,11 @@ public class CreateClientDTO {
         this.phone = phone;
     }
 
-    public AddressDTO getAddress() {
+    public CreateAddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(AddressDTO address) {
+    public void setAddress(CreateAddressDTO address) {
         this.address = address;
     }
 }

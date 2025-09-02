@@ -55,7 +55,7 @@ public class ClientController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Cria um novo cliente", description = "Registra um novo cliente e seu endereço no banco de dados.")
+    @Operation(summary = "Adicionar cliente", description = "Registra um novo cliente e seu endereço no banco de dados.")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Cliente criado com sucesso",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ClientDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos", content = @Content),
