@@ -64,7 +64,7 @@ Faça o primeiro post para se autenticar e começar a utilizar a API
 Autenticação: Vá para o endpoint POST /auth/login, clique em "Try it out" e use as seguintes credenciais de administrador para obter um token JWT
 ```bash 
 {
-  "login": "admin",
+  "login": "admin@email.com",
   "password": "123456"
 }
 
