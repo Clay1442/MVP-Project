@@ -39,7 +39,7 @@ Docker e Docker Compose instalados e em execução.
 
 ```bash
 # Clone este repositório 
-git clone https://github.com/Clay1442/livraria-euliro.git
+git clone https://github.com/Clay1442/MVP-Project.git
 
 # Navegue até a pasta raiz do projeto
 cd MVP-Project\backend
